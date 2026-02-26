@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant Legacy as Legacy Core (Mainframe)
+    participant DB as Legacy DB
+    participant CDC as Debezium (CDC)
+    participant Kafka as Event Bus (Kafka)
+    participant Cons as Digital Core / Cache
+    
+    Legacy->>DB: Actualización de saldo/estado
+    DB-->>CDC: Captura de log binario
+    CDC->>Kafka: Publica evento "DataChanged"
+    Kafka->>Cons: Consume evento y actualiza estado
+    Note right of Cons: Baja latencia < 500ms

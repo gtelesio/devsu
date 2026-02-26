@@ -1,0 +1,21 @@
+graph TB
+    subgraph "Sistemas Externos"
+        Customers["Clientes (Web/Móvil)"]
+        OpenFinance["APIs Open Finance (Terceros)"]
+    end
+
+    subgraph "Entorno Bancario Modernizado"
+        BankingCloud["Plataforma Bancaria (Cloud-Native)"]
+    end
+
+    subgraph "Sistemas de Apoyo"
+        Payments["Servicios de Pago"]
+        Risk["Gestión de Riesgos"]
+        Fraud["Prevención de Fraudes"]
+    end
+
+    Customers --> BankingCloud
+    BankingCloud --> OpenFinance
+    BankingCloud --> Payments
+    BankingCloud --> Risk
+    BankingCloud --> Fraud

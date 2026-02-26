@@ -1,0 +1,49 @@
+graph TB
+    subgraph "Canales"
+        WebApp["Web Banking (React)"]
+        MobileApp["Mobile Banking (Native)"]
+    end
+
+    subgraph "Capa de API & Seguridad"
+        APIGateway["API Gateway (Kong/Apigee)"]
+        IAM["IAM (OIDC/Keycloak)"]
+    end
+
+    subgraph "Capa de Experiencia & Orquestación"
+        BFF["BFF (Backend for Frontend)"]
+        OpenFinanceSvc["Open Finance Service (BIAN)"]
+    end
+
+    subgraph "Digital Integration Hub (DIH)"
+        Cache["Read Cache (Redis/In-Memory)"]
+        EventStream["Event Streaming (Kafka)"]
+    end
+
+    subgraph "Cores Bancarios (Multicore)"
+        DigitalCore["Digital Core (Cloud Native)"]
+        LegacyCore["Legacy Core (Mainframe)"]
+        CDC["Change Data Capture (Debezium)"]
+    end
+
+    subgraph "Servicios de Negocio (Microservicios)"
+        PaySvc["Payment Services"]
+        RiskSvc["Risk Management"]
+        FraudSvc["Fraud Prevention"]
+    end
+
+    WebApp --> APIGateway
+    MobileApp --> APIGateway
+    APIGateway --> IAM
+    APIGateway --> BFF
+    BFF --> OpenFinanceSvc
+    BFF --> PaySvc
+    BFF --> Cache
+    
+    CDC --> LegacyCore
+    CDC --> EventStream
+    EventStream --> DigitalCore
+    EventStream --> Cache
+    
+    DigitalCore --> PaySvc
+    PaySvc --> RiskSvc
+    PaySvc --> FraudSvc

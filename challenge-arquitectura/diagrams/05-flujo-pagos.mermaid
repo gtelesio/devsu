@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant UI as Cliente (App/Web)
+    participant GW as API Gateway
+    participant BFF as Backend for Frontend
+    participant BIAN as Payment Order (Microservicio)
+    participant Srv as Risk & Fraud Services
+    participant Ext as Gateway de Pagos Externo
+    
+    UI->>GW: Solicitar Pago
+    GW->>BFF: Autorizar y Enrutar
+    BFF->>BIAN: Crear Orden de Pago
+    activate BIAN
+    BIAN->>Srv: Validar Riesgo y Fraude
+    Srv-->>BIAN: Scoring OK
+    BIAN->>Ext: Ejecutar Transacción
+    Ext-->>BIAN: Resultado (Success/Fail)
+    BIAN-->>BFF: Confirmación
+    deactivate BIAN
+    BFF-->>UI: Notificación al Cliente

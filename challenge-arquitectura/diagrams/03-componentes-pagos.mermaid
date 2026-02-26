@@ -1,0 +1,23 @@
+graph LR
+    APIGW["API Gateway"]
+    
+    subgraph "Contenedor de Servicios de Pago"
+        PaymentCtrl["Payment Controller (Rest)"]
+        ValidationSvc["Validation Service"]
+        AccountingSvc["Accounting Service"]
+        RiskProxy["Risk Service Proxy"]
+    end
+    
+    subgraph "Integraciones"
+        Kafka["Kafka (Event Bus)"]
+        Redis["Redis (Cache DIH)"]
+        ExternalGtw["External Payment Gateway"]
+    end
+
+    APIGW --> PaymentCtrl
+    PaymentCtrl --> ValidationSvc
+    PaymentCtrl --> RiskProxy
+    ValidationSvc --> Redis
+    PaymentCtrl --> AccountingSvc
+    AccountingSvc --> Kafka
+    PaymentCtrl --> ExternalGtw
